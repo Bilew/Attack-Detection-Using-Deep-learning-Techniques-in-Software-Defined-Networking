@@ -1,10 +1,9 @@
 # Attack-Detection Using Deep-learning 
-Overview
-
+# Overview
 This project aims to detect cyber attacks using deep learning techniques. By leveraging advanced machine learning models, the system can identify potential threats in network traffic and security logs, providing real-time or near real-time protection.
 Features
-
-Deep Learning Models: Uses CNNs, RNNs, LSTMs, or transformer-based architectures for attack detection.
+# Deep Learning Models:
+Uses CNNs, RNNs, LSTMs, or transformer-based architectures for attack detection.
 
 Real-Time Detection: Provides near-instantaneous detection of threats.
 
