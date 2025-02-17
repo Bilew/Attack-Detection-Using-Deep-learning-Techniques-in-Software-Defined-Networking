@@ -52,10 +52,7 @@ pip install -r requirements.txt
    ```
 
 ## Dataset Sources
-- [CIC-IDS2017](https://www.unb.ca/cic/datasets/ids-2017.html)
 - [NSL-KDD](https://www.unb.ca/cic/datasets/nsl.html)
-- [UNSW-NB15](https://www.unsw.adfa.edu.au/unsw-canberra-cyber/cybersecurity/ADFA-NB15-Datasets/)
-
 ## Model Architectures
 - **CNNs**: Used for feature extraction.
 - **RNNs/LSTMs**: Effective for sequential data analysis.
@@ -71,10 +68,10 @@ pip install -r requirements.txt
 Feel free to contribute to the project by submitting pull requests. Please ensure that your contributions align with best practices in deep learning and cybersecurity.
 
 ## License
-This project is licensed under the MIT License.
+None.
 
 ## Contact
-For questions or collaborations, reach out at **your.email@example.com** or open an issue in the repository.
+For questions or collaborations, reach out at **bilew19@gmail.com** or open an issue in the repository.
 
 
 # Deep Learning Models:
