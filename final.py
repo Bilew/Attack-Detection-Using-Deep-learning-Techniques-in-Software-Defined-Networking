@@ -178,7 +178,6 @@ print()
 print('Distribution of categories in service:')
 print(df['service'].value_counts().sort_values(ascending=False).head())
 
-
 # Test set
 print('Test set:')
 for col_name in testdf.columns:
@@ -197,7 +196,6 @@ categorical_columns=['protocol_type', 'service', 'flag']
 df_categorical_values = df[categorical_columns]
 testdf_categorical_values = testdf[categorical_columns]
 df_categorical_values.head(5)
-
 
 ###Make column names for dummies for training set and testing set
 ## training set
@@ -225,7 +223,6 @@ unique_service2_test=[string2 + x for x in unique_service_test]
 testdfumcols=unique_protocol2 + unique_service2_test + unique_flag2
 print(dumcols)
 
-
 f_protocol = pd.crosstab(index=df["protocol_type"],columns="count")
 f_protocol = f_protocol/len(df)
 f_protocol = f_protocol[f_protocol["count"] > 0.01]
@@ -238,7 +235,6 @@ f_data = df[df['protocol_type'].isin(list(f_protocol.index))]
 f_data = f_data[f_data['label'].isin(list(f_attacks.index))]
 
 ## Create a Two-Way Table
-
 relationship_protocoal_attack = pd.crosstab(index=f_data["label"], 
                           columns=f_data["protocol_type"])
 ## Plot the Two-Way Table
@@ -246,14 +242,12 @@ relationship_protocoal_attack.plot(kind="bar",
                  figsize=(8,8),
                  stacked=True);
 
-
 ## Create a cross tab dataframe
 protocol_data = pd.crosstab(index = df["protocol_type"],columns="Protocol type")
 frequency_table_protocol = (protocol_data/protocol_data.sum())
 
 ## Plot the dataframe
 frequency_table_protocol.plot.bar();
-
 
 #Transform categorical features into numbers using LabelEncoder
 from sklearn.preprocessing import LabelEncoder
@@ -271,7 +265,6 @@ print(testdf_categorical_values_enc.head())
 # i add the ff 3 line of code
 #le = preprocessing.labelEncoder()
 
-
 #One-Hot-Encoding
 from sklearn.preprocessing import OneHotEncoder
 # for train dataset
@@ -287,7 +280,6 @@ testdf_cat_data = pd.DataFrame(testdf_categorical_values_encenc.toarray(),column
 df_cat_data.head()
 testdf_cat_data.head()
 
-
 # test set
 testdf_categorical_values_encenc = enc.fit_transform(testdf_categorical_values_enc)
 testdf_cat_data = pd.DataFrame(testdf_categorical_values_encenc.toarray(),columns=testdfumcols)
@@ -298,7 +290,6 @@ testdf_cat_data.head()
 
 testdf_cat_data.head()
 
-
 #Add 6 missing categories from train set to test set
 trainservice=df['service'].tolist()
 testservice= testdf['service'].tolist()
@@ -307,18 +298,15 @@ string = 'service_'
 difference=[string + x for x in difference]
 difference
 
-
 for col in difference:
     testdf_cat_data[col] = 0
 
 testdf_cat_data.shape
 
-
 for col in difference:
     df_cat_data[col] = 0
 
 df_cat_data.shape
-
 
 #Join encoded categorical dataframe with the non-categorical dataframe
 #obtaine 123 features previous 42 feature + current encoded 84 features - 3features (flag, protocol,services)
@@ -334,10 +322,8 @@ newtestdf.drop('service', axis=1, inplace=True)
 print(newdf.shape)
 print(newtestdf.shape)
 
-
 newdf.dropna(axis=1, inplace=True)
 newtestdf.dropna(axis=1, inplace=True)
-
 
 #split dataset in to 4 dataset for every attack category (Classification of attack) 
 #rename every attack label: 0= normal,1=DOS,2=prope,3=R2L 4=U2R
@@ -356,31 +342,25 @@ newlabeltestdf=labeltestdf.replace({ 'normal' : 0, 'neptune' : 1 ,'back': 1, 'la
                            ,'ftp_write': 3,'guess_passwd': 3,'imap': 3,'multihop': 3,'phf': 3,'spy': 3,'warezclient': 3,'warezmaster': 3,'sendmail': 3,'named': 3,'snmpgetattack': 3,'snmpguess': 3,'xlock': 3,'xsnoop': 3,'httptunnel': 3,
                            'buffer_overflow': 4,'loadmodule': 4,'perl': 4,'rootkit': 4,'ps': 4,'sqlattack': 4,'xterm': 4})
 
-
 # Now put the new label column back
 newdf['label'] = newlabeldf
 newtestdf['label'] = newlabeltestdf
 print(newdf['label'].head())
 print(newtestdf['label'].head())
 
-
 print(newdf.shape)
 print(newtestdf.shape)
-
 
 #######################3
 #Convert "label" into normal=0 and attack=1 for KDDTrain+
 newdf['class']=newdf['label'].apply(lambda x: 1 if x>=1 else 0)
 newdf.drop(['label'], axis=1)
 
-
 #Convert "label" into normal=0 and attack=1 for KDDTest+
 newtestdf['class']=newtestdf['label'].apply(lambda x: 1 if x>=1 else 0)
 newtestdf.drop(['label'],1)
 
-
 newdf.groupby('class').count()
-
 
 import matplotlib.pyplot as plt 
 import seaborn as sns
@@ -388,14 +368,11 @@ sns.countplot(x="class", data=newdf, palette="Accent")
 plt.title('Class Distributions in KDDTrain+ \n 0: Normal || 1: Attack', fontsize=14)
 #plt.show()
 
-
 newtestdf.groupby('class').count()
 
 sns.countplot(x="class", data=newtestdf, palette="Accent")
 plt.title('Class Distributions in KDDTest+ \n 0: Normal || 1: Attack', fontsize=14)
 #plt.show()
-
-
 
 # step1: apply the logarithmic scaling method for 
 #scaling to obtain the ranges of `duration[0,4.77]',
@@ -405,9 +382,7 @@ newdf['log2_value2'] = np.log2(newdf['src_bytes'])
 newdf['log2_value3'] = np.log2(newdf['dst_bytes'])
 newdf=newdf.drop(['log2_value3','log2_value2','log2_value1'], axis=1)
 
-
 # testing set
-
 newtestdf['log2_value1'] = np.log2(newtestdf['duration'])
 newtestdf['log2_value2'] = np.log2(newtestdf['src_bytes'])
 newtestdf['log2_value3'] = np.log2(newtestdf['dst_bytes'])
@@ -422,7 +397,6 @@ xtest=newtestdf.drop("class",1) #X-test
 ytest=newtestdf['class'] # y-test
 xtest
 
-
 # Step 2: the value of every feature is mapped to the [0,1] range linearly
 from sklearn.preprocessing import MinMaxScaler
 from sklearn import preprocessing
@@ -432,7 +406,6 @@ scale= preprocessing.StandardScaler().fit(x)
 x=scale.transform(x) 
 scaletest= preprocessing.StandardScaler().fit(xtest)
 xtest=scaletest.transform(xtest)
-
 
 from tensorflow import keras
 import numpy as np
@@ -475,14 +448,12 @@ model2.summary()
 #history2 = model2.fit(x_train, y, validation_data=(x_test, ytest),batch_size=32, epochs=1000, callbacks=[es])
 history2 = model2.fit(x_train, y, validation_data=(x_test, ytest), batch_size=5000, epochs=100)
 
-
 y_pred_gru = model2.predict_classes(x_test)
 y_probs_gru=model2.predict_proba(x_test)
 ######Plot confusion matrix
 skplt.metrics.plot_confusion_matrix(ytest, y_pred_gru)
 plt.title("GRU-Confusion Matrix")
 plt.show()
-
 
 accuracy = accuracy_score(ytest, y_pred_gru)
 print("accuracy:",accuracy)
@@ -494,7 +465,6 @@ pr=precision_score(ytest,y_pred_gru)
 print("Precision:",pr)
 rs=recall_score(ytest,y_pred_gru)
 print("Recall_score:",rs)
-
 
 plt.figure(0) 
 plt.plot(history2.history['accuracy'])
@@ -520,7 +490,6 @@ plt.xlim([0,100])
 plt.ylim([-0.1,1])
 plt.show()
 
-
 model3 = Sequential()
 model3.add(LSTM(32, return_sequences=True, input_shape=(1,123))) #hidden1
 model3.add(Dropout(0.6))
@@ -534,13 +503,10 @@ model3.add(Dense(1, activation = 'sigmoid')) #out put layers
 model3.compile(optimizer = 'Adam', loss = 'binary_crossentropy', metrics=['accuracy'])#binary_crossentropy
 model3.summary()
 
-
 model3.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
 #es = EarlyStopping(monitor='val_accuracy', mode='max', min_delta=0.0001,patience=5) ## early stoppoing
 #history3 = model3.fit(x_train, y, batch_size=32, epochs=100, validation_data=(x_test, ytest),callbacks=[es])
 history3 = model3.fit(x_train, y, validation_data = (x_test, ytest), epochs=100, batch_size = 5000)
-
-
 
 #print(model.get_config())
 ## fit the model...
@@ -557,7 +523,6 @@ plt.show()
 loss,accuracy = model3.evaluate(x_test, ytest)
 print("\n Loss: %.2f, Accuracy: %.2f%%" % (loss, accuracy*100))
 
-
 accuracy = accuracy_score(ytest, y_pred_lstm)
 print("accuracy:",accuracy)
 f1score=f1_score(ytest, y_pred_lstm)
@@ -568,7 +533,6 @@ pr=precision_score(ytest,y_pred_lstm)
 print("Precision:",pr)
 rs=recall_score(ytest,y_pred_lstm)
 print("Recall_score:",rs)
-
 
 plt.figure(0) 
 plt.plot(history3.history['accuracy'])
@@ -582,7 +546,6 @@ plt.xlim([1,100])
 plt.ylim([0,1.1])
 plt.show()
 
-
 plt.plot(history3.history['loss'])
 plt.plot(history3.history['val_loss'])
 plt.rcParams['figure.figsize'] = (10, 5)
@@ -595,7 +558,6 @@ plt.xlim([1,100])
 plt.ylim([-0.1,1])
 plt.show()
 
-
 x=pd.DataFrame(x)
 x = x.values
 sample = x.shape[0]
@@ -607,11 +569,9 @@ x_test=pd.DataFrame(xtest)
 x_test = x_test.values
 x_test = np.reshape(x_test,(x_test.shape[0], x_test.shape[1]))
 
-
 x_train.shape
 
 x_test.shape
-
 
 mlp = Sequential() # creating model
 
@@ -624,7 +584,6 @@ mlp.add(Dense(units=1,activation='sigmoid'))
 mlp.compile(loss='mse', optimizer='adam', metrics=['accuracy'])#binary_crossentropy
 # summary of model layers
 mlp.summary()
-
 
 mlp.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
 #es = EarlyStopping(monitor='val_accuracy', mode='max', min_delta=0.0001,patience=5) ## early stoppoing
@@ -645,7 +604,6 @@ skplt.metrics.plot_confusion_matrix(ytest, y_pred_mlp)
 plt.title("MLP-Confusion Matrix")
 plt.show()
 
-
 accuracy = accuracy_score(ytest, y_pred_mlp)
 print("accuracy:",accuracy)
 f1score=f1_score(ytest, y_pred_mlp)
@@ -656,7 +614,6 @@ pr=precision_score(ytest,y_pred_mlp)
 print("Precision:",pr)
 rs=recall_score(ytest,y_pred_mlp)
 print("Recall_score:",rs)
-
 
 plt.figure(0) 
 plt.plot(history4.history['accuracy'])#,'r') 
@@ -681,7 +638,6 @@ plt.legend(['x_train','x_test'], loc='best')
 plt.xlim([0,100])
 plt.ylim([-0.1,1])
 plt.show()
-
 
 plt.figure(0) 
 plt.plot(history2.history['accuracy']) 
