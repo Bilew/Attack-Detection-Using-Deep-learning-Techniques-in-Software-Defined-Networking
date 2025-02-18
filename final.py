@@ -78,7 +78,6 @@ warnings.filterwarnings("ignore")
 import tensorflow as tf
 from keras.utils.vis_utils import plot_model
 
-
 print(tf.__version__)
 print(np.__version__)
 print(pd.__version__)
@@ -101,7 +100,6 @@ col_names = ["duration","protocol_type","service","flag","src_bytes",
     "dst_host_srv_diff_host_rate","dst_host_serror_rate","dst_host_srv_serror_rate",
     "dst_host_rerror_rate","dst_host_srv_rerror_rate","label"]
 
-
 # KDDTrain+.csv & KDDTest+.csv are the datafiles without the last 
 #column about the difficulty score these have already been removed.
 # load train and test dataset 
@@ -112,45 +110,32 @@ print('Dimensions of the Training set:',df.shape)
 print('Dimensions of the Test set:',testdf.shape)
 print("Total number: ", len(df)+len(testdf))
 
-
 df.dropna()
-
 
 testdf.dropna()
 
 df.isnull().values.any()
 
-
-
 testdf.isnull().values.any()
-
 
 df.isnull().sum().sum()
 
-
 testdf.isnull().sum().sum()
-
 
 df.dropna(axis='columns')
 
-
 testdf.dropna(axis='columns')
 
-
 df.head()
-
 
 testdf.head()
 
 df.isnull()
 
-
 testdf.isnull()
-
 
 #Statistical Summary
 df.describe() 
-
 
 #data viulizations
 print(df.info())
@@ -162,7 +147,6 @@ print(df['label'].value_counts())
 print()
 print('Label distribution Test set:')
 print(testdf['label'].value_counts())
-
 
 #Identify categorical features
 # colums that are categorical and not binary yet: protocol_type (column 2), service (column 3), flag (column 4).
@@ -185,7 +169,6 @@ for col_name in testdf.columns:
         unique_cat = len(testdf[col_name].unique())
         print("Feature '{col_name}' has {unique_cat} categories".format(col_name=col_name, unique_cat=unique_cat))
         
-
 #LabelEncoder
 #Insert categorical features into a 2D numpy array
 from sklearn.preprocessing import LabelEncoder,OneHotEncoder
@@ -215,7 +198,6 @@ unique_flag2=[string3 + x for x in unique_flag] #original
 # put together
 dumcols=unique_protocol2 + unique_service2 + unique_flag2
 print(dumcols)
-
 
 # for test set
 unique_service_test=sorted(testdf.service.unique())
@@ -257,7 +239,6 @@ print(df_categorical_values_enc.head(10))
 # test set
 testdf_categorical_values_enc=testdf_categorical_values.apply(LabelEncoder().fit_transform)
 print(testdf_categorical_values_enc.head())
-
 
 # test set
 testdf_categorical_values_enc=testdf_categorical_values.apply(LabelEncoder().fit_transform)
@@ -425,71 +406,6 @@ x_test = np.reshape(x_test,(x_test.shape[0], 1, x_test.shape[1]))
 x_train.shape
 x_test.shape
 
-## 2. create the GRU network
-model2 = Sequential()
-model2.add(GRU(64, return_sequences=True, input_shape=(1, 123)))  # hidden1
-model2.add(Dropout(0.6))
-model2.add(GRU(64,return_sequences=True))  # hidden2
-model2.add(Dropout(0.6))
-model2.add(GRU(64, return_sequences=True))  # hidden3
-model2.add(Dropout(0.6))
-model2.add(GRU(64, return_sequences=False))  # hidden4
-model2.add(Dropout(0.6))
-model2.add(Dense(1))  # out put hidden
-model2.add(Activation('sigmoid')) #sigmoid
-#print(model.get_config())
-model2.compile(optimizer='adam',loss='binary_crossentropy',metrics=['accuracy'])#binary_crossentropy
-model2.summary()
-
-# try using different optimizers and different optimizer configs
-
-#model2.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
-#es = EarlyStopping(monitor='val_accuracy', mode='max', min_delta=0.0001,patience=5) ## early stoppoing
-#history2 = model2.fit(x_train, y, validation_data=(x_test, ytest),batch_size=32, epochs=1000, callbacks=[es])
-history2 = model2.fit(x_train, y, validation_data=(x_test, ytest), batch_size=5000, epochs=100)
-
-y_pred_gru = model2.predict_classes(x_test)
-y_probs_gru=model2.predict_proba(x_test)
-######Plot confusion matrix
-skplt.metrics.plot_confusion_matrix(ytest, y_pred_gru)
-plt.title("GRU-Confusion Matrix")
-plt.show()
-
-accuracy = accuracy_score(ytest, y_pred_gru)
-print("accuracy:",accuracy)
-f1score=f1_score(ytest, y_pred_gru)
-print("f1-acore:",f1score)
-cm=confusion_matrix(ytest, y_pred_gru)
-print("confusion matrix:\n",cm)
-pr=precision_score(ytest,y_pred_gru)
-print("Precision:",pr)
-rs=recall_score(ytest,y_pred_gru)
-print("Recall_score:",rs)
-
-plt.figure(0) 
-plt.plot(history2.history['accuracy'])
-plt.plot(history2.history['val_accuracy'])
-plt.rcParams['figure.figsize'] = (10, 5)
-plt.xlabel("Numb of Epochs") 
-plt.ylabel("Accuracy") 
-plt.title(" GRU model to detect Attack")
-plt.legend(['x_train','x_test'], loc='center right')
-plt.xlim([0,100])
-plt.ylim([0,1.1])
-plt.show()
-
-plt.plot(history2.history['loss'])
-plt.plot(history2.history['val_loss'])
-plt.rcParams['figure.figsize'] = (10, 5)
-plt.title('model loss on the LSTM model')
-plt.ylabel('loss')
-plt.xlabel('Number of epochs')
-plt.title(" GRU model to detect Attack")
-plt.legend(['x_train','x_test'], loc='best')
-plt.xlim([0,100])
-plt.ylim([-0.1,1])
-plt.show()
-
 model3 = Sequential()
 model3.add(LSTM(32, return_sequences=True, input_shape=(1,123))) #hidden1
 model3.add(Dropout(0.6))
@@ -558,116 +474,3 @@ plt.xlim([1,100])
 plt.ylim([-0.1,1])
 plt.show()
 
-x=pd.DataFrame(x)
-x = x.values
-sample = x.shape[0]
-features = x.shape[1]
-#Train: convert 2D to 3D for input RNN
-x_train = np.reshape(x,(sample, features)) #shape  = (125973, 18, 1)
-#Test: convert 2D to 3D for input RNN
-x_test=pd.DataFrame(xtest)
-x_test = x_test.values
-x_test = np.reshape(x_test,(x_test.shape[0], x_test.shape[1]))
-
-x_train.shape
-
-x_test.shape
-
-mlp = Sequential() # creating model
-
-# adding input layer and first layer with 50 neurons
-mlp.add(Dense(units=64, input_dim=123, activation='sigmoid'))#relu
-# output layer with sigmoid activation
-mlp.add(Dense(units=1,activation='sigmoid'))
-
-# defining loss function, optimizer, metrics and then compiling model
-mlp.compile(loss='mse', optimizer='adam', metrics=['accuracy'])#binary_crossentropy
-# summary of model layers
-mlp.summary()
-
-mlp.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
-#es = EarlyStopping(monitor='val_accuracy', mode='max', min_delta=0.0001,patience=5) ## early stoppoing
-#history4 = model3.fit(x_train, y, batch_size=1000, epochs=2, validation_data=(x_test, ytest),callbacks=[es])
-
-history4 = mlp.fit(x_train, y, batch_size=5000, epochs=100, verbose=1, validation_data=(x_test, ytest))
-# Final evaluation of the model
-#scores = mlp.evaluate(x_test, ytest, verbose=0)
-#print("/n")
-#print("Accuracy: %.2f%%" % (scores[1]*100))
-
-y_pred_mlp = mlp.predict_classes(x_test)
-y_probs_mlp=mlp.predict_proba(x_test)
-#np.savetxt('gru_predictions.txt', np.transpose(np.concatenate((y_test.reshape((y_test.size, 1)),y_pred_gru), axis=1)), fmt='%01d')
-#np.savetxt('gru_prob_predictions.txt', np.around(np.transpose(y_probs_gru),decimals=5), fmt='%.5f')
-######Plot confusion matrix
-skplt.metrics.plot_confusion_matrix(ytest, y_pred_mlp)
-plt.title("MLP-Confusion Matrix")
-plt.show()
-
-accuracy = accuracy_score(ytest, y_pred_mlp)
-print("accuracy:",accuracy)
-f1score=f1_score(ytest, y_pred_mlp)
-print("f1-acore:",f1score)
-cm=confusion_matrix(ytest, y_pred_mlp)
-print("confusion matrix:\n",cm)
-pr=precision_score(ytest,y_pred_mlp)
-print("Precision:",pr)
-rs=recall_score(ytest,y_pred_mlp)
-print("Recall_score:",rs)
-
-plt.figure(0) 
-plt.plot(history4.history['accuracy'])#,'r') 
-plt.plot(history4.history['val_accuracy'])#,'g')
-plt.rcParams['figure.figsize'] = (12, 4)
-plt.xlabel("Numb of Epochs") 
-plt.ylabel("Accuracy") 
-plt.title(" MLP model to detect Attack)")
-plt.legend(['x_train','x_test'], loc='lower right')
-plt.xlim([0,100])
-plt.ylim([0,1.1])
-plt.show()
-
-plt.plot(history4.history['loss'])
-plt.plot(history4.history['val_loss'])
-plt.rcParams['figure.figsize'] = (12, 4)
-plt.title('model loss on the LSTM model')
-plt.ylabel('loss')
-plt.xlabel('epochs')
-plt.title(" MLP model to detect Attack)")
-plt.legend(['x_train','x_test'], loc='best')
-plt.xlim([0,100])
-plt.ylim([-0.1,1])
-plt.show()
-
-plt.figure(0) 
-plt.plot(history2.history['accuracy']) 
-plt.plot(history2.history['val_accuracy'])
-plt.plot(history3.history['accuracy'])
-plt.plot(history3.history['val_accuracy'])
-plt.plot(history4.history['accuracy'])
-plt.plot(history4.history['val_accuracy'])
-plt.xlabel("Numb of Epochs") 
-plt.ylabel("Accuracy") 
-plt.title("Model accuracy comparison")
-plt.legend(['GRU_train','GRU_test','LSTM_train','LSTM_test','MLP_train','MLP_test'], loc='lower right')
-plt.rcParams['figure.figsize'] = (12, 4) 
-plt.xlim([0,100])
-plt.ylim([0,1.1])
-plt.show()
-
-# model comparison for attack detection loss
-plt.plot(history2.history['loss'])
-plt.plot(history2.history['val_loss'])
-plt.plot(history3.history['loss'])
-plt.plot(history3.history['val_loss'])
-plt.plot(history4.history['loss'])
-plt.plot(history4.history['val_loss'])
-plt.title('model loss on the LSTM ')
-plt.rcParams['figure.figsize'] = (12, 4) 
-plt.ylabel('loss')
-plt.xlabel('Number of epochs')
-plt.title("Model comparison for attack detection loss")
-plt.legend(['GRU_train','GRU_test','LSTM_train','LSTM_test','MLP_train','MLP_test'], loc='upper right')
-plt.xlim([0,100])
-plt.ylim([-0.1,1])
-plt.show() 
