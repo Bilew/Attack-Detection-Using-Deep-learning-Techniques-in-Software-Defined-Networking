@@ -1,6 +1,6 @@
 # Attack-Detection Using Deep-learning in Software-Defined Networking  
 # Overview
-This project aims to detect cyber attacks using deep learning techniques. By leveraging advanced machine learning models, the system can identify potential threats in network traffic and security logs, providing real-time or near real-time protection.
+This project aims to detect cyber attacks using deep learning techniques. By leveraging advanced Deep learning models, the system can identify potential threats in network traffic and security logs, providing real-time or near real-time protection.
 # Attack Detection Using Deep Learning
 
 ## Overview
