@@ -4,7 +4,6 @@ This project aims to detect cyber attacks using deep learning techniques in SDN.
 Software-Defined Networking (SDN) is an innovative approach to networking that separates the control plane from the data plane, allowing for more flexible and programmable network management. SDN enables network administrators to control and configure the network through software applications, rather than relying on traditional hardware-based configurations. This offers greater scalability, easier management, and the ability to dynamically adjust the network to changing demands.
 
 
-providing real-time or near real-time protection.
 # Attack Detection Using Deep Learning
 
 ## Overview
@@ -57,10 +56,11 @@ pip install -r requirements.txt
    - On top of your topology diagram, test the performance of deep learning for detecting attacks/malware.
    - Then, evaluate the performance.
 ## Results & Performance
-- Accuracy: **XX%**
-- Precision: **XX%**
-- Recall: **XX%**
-- F1-Score: **XX%**
+- Accuracy: **97.55**
+- Precision: **96.48%**
+- Recall: **99.01**
+- F1-Score: **97.72**
+
 
 ## Contributing
 Feel free to contribute to the project by submitting pull requests. Please ensure that your contributions align with best practices in deep learning and cybersecurity.
@@ -78,3 +78,7 @@ Real-Time Detection: Provides near-instantaneous detection of threats.
 Dataset Handling: Supports multiple cybersecurity datasets, such as CIC-IDS2017, NSL-KDD, and UNSW-NB15.
 Scalability: Can be integrated into security information and event management (SIEM) systems.
 Visualization & Reporting: Offers logs and visual dashboards for analysis.
+
+# For Future:
+I have a dream to providing real-time malware detection in Software-Deffined Networking using advanced Deep Learning Techniques like Bidirectional LSTM.
+
