@@ -4,11 +4,6 @@ This project aims to detect cyber attacks using deep learning techniques in SDN.
 Software-Defined Networking (SDN) is an innovative approach to networking that separates the control plane from the data plane, allowing for more flexible and programmable network management. SDN enables network administrators to control and configure the network through software applications, rather than relying on traditional hardware-based configurations. This offers greater scalability, easier management, and the ability to dynamically adjust the network to changing demands.
 
 
-# Attack Detection Using Deep Learning
-
-## Overview
-This project aims to detect cyber attacks using deep learning techniques. By leveraging advanced machine learning models, the system can identify potential threats in network traffic and security logs, providing real-time or near real-time protection.
-
 ## Features
 - **Deep Learning Models**: Uses CNNs, RNNs, LSTMs, or transformer-based architectures for attack detection.
 - **Real-Time Detection**: Provides near-instantaneous detection of threats.
