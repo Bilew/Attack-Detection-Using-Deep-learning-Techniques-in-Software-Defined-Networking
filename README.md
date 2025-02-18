@@ -45,6 +45,13 @@ pip install -r requirements.txt
 ## Model Architectures
 - LSTMs**: Effective for sequential data analysis.
 
+## Prepare a network Diagram using:  
+  - Mininet
+  - Ryu Controller
+    
+## From the Ryu Contrller in the control Layer: 
+   - On top of your topology diagram, test the performance of deep learning for detecting attacks/malware.
+   - Then, evaluate the performance.
 ## Results & Performance
 - Accuracy: **XX%**
 - Precision: **XX%**
